@@ -1,0 +1,19 @@
+{
+  "name": "sbkl-client",
+  "version": "1.0.0",
+  "description": "Nuxt starter package",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sbkl/sbkl-client.git"
+  },
+  "author": "Sebastien Koziel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sbkl/sbkl-client/issues"
+  },
+  "homepage": "https://github.com/sbkl/sbkl-client#readme"
+}

@@ -1,6 +1,6 @@
 const path = require("path");
 require("dotenv").config();
-import { router, auth } from "sbkl-components";
+import { router, auth } from "sbkl-client";
 
 export default {
   mode: "universal",
@@ -34,7 +34,7 @@ export default {
   plugins: [
     "./plugins/global.js",
     "./plugins/mixins/responsive.js",
-    "./plugins/sbkl-components.js"
+    "./plugins/sbkl-client.js"
   ],
   /*
    ** Nuxt.js dev-modules
@@ -72,11 +72,11 @@ export default {
         tailwindcss: path.resolve(__dirname, "./tailwind.config.js")
       }
     },
-    transpile: ["sbkl-components"],
+    transpile: ["sbkl-client"],
     extend(config, ctx) {}
   },
   purgeCSS: {
     mode: "postcss",
-    paths: ["node_modules/sbkl-components/**/*.vue", "admin.config.js"]
+    paths: ["node_modules/sbkl-client/**/*.vue", "admin.config.js"]
   }
 };

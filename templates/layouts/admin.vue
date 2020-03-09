@@ -9,7 +9,7 @@
   </v-layout-admin>
 </template>
 <script>
-import { customRoutes } from "sbkl-components/router";
+import { customRoutes } from "sbkl-client/router";
 export default {
   name: "AdminLayout",
   data() {

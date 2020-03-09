@@ -1,2 +1,2 @@
-import { validationStore } from "sbkl-components";
+import { validationStore } from "sbkl-client";
 export const { state, getters, actions, mutations } = validationStore;

@@ -113,6 +113,9 @@ const actions = {
     } catch (e) {
       console.log(e);
     }
+  },
+  clearAdmin({ commit }) {
+    commit("CLEAR_ADMIN");
   }
 };
 const mutations = {
@@ -121,6 +124,10 @@ const mutations = {
   },
   SET_PARENT_ITEM_SELECTED(state, item) {
     state.parentItemSelected = item;
+  },
+  CLEAR_ADMIN(state) {
+    state.models = [];
+    state.parentItemSelected = null;
   }
 };
 

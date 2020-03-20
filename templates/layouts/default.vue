@@ -2,7 +2,8 @@
   <v-layout-elevated
     :logoImage="require(`../assets/img/rstore_icon_gray_bg.png`)"
     :routes="[
-      //[title, route, authorisation]
+      ['Dashboard', 'dashboard', $auth.user ? $auth.user.role === 'Office' : false],
+      ['Stores', 'stores', $auth.user ? $auth.user.role === 'Office' : false]
     ]"
     :actions="[
       //[component, authorisation, {callbacks}],
@@ -29,12 +30,8 @@ export default {
   },
   methods: {
     ...mapActions({
-      // fetchNotifications: "notifications/index",
-      // clearNotifications: "notifications/clearNotifications"
-    }),
-    clearStore() {
-      // this.clearNotifications();
-    }
+      clearStore: "clearStore"
+    })
   }
 };
 </script>

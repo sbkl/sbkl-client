@@ -59,6 +59,7 @@ export default {
   },
   methods: {
     ...mapActions({
+      init: "init",
       registerUserLastActivityDate: "admin/registerUserLastActivityDate"
     }),
     async onSubmit() {
@@ -68,6 +69,7 @@ export default {
           data: { ...this.passportParams, ...this.form }
         });
         this.registerUserLastActivityDate();
+        this.init();
         this.redirectForRole(this.$auth.user.role);
       } catch (e) {
         const error =

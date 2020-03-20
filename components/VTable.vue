@@ -4,7 +4,7 @@
       v-if="table.relationshipHeaderTitle"
       :title="table.relationshipHeaderTitle"
     />
-    <div class="lg:flex lg:items-center lg:justify-between mb-4">
+    <div v-if="hasHeader" class="lg:flex lg:items-center lg:justify-between mb-4">
       <div class="flex-1 min-w-0 flex">
         <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:leading-9 sm:truncate">
           {{
@@ -181,6 +181,10 @@ export default {
     isRelationshipTable: {
       type: Boolean,
       default: false
+    },
+    hasHeader: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {

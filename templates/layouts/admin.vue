@@ -10,6 +10,7 @@
 </template>
 <script>
 import { customRoutes } from "sbkl-client/router";
+import { mapActions } from "vuex";
 export default {
   name: "AdminLayout",
   data() {
@@ -19,8 +20,12 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      clearStore: "clearStore"
+    }),
     logout() {
       this.$auth.logout();
+      this.clearStore();
     }
   }
 };

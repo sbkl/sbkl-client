@@ -51,6 +51,7 @@ mkdir ./assets/img && cp ./node_modules/sbkl-client/templates/assets/img/rstore_
 cp ./node_modules/sbkl-client/templates/layouts/admin.vue ./layouts/
 cp ./node_modules/sbkl-client/templates/layouts/default.vue ./layouts/
 cp ./node_modules/sbkl-client/templates/layouts/none.vue ./layouts/
+cp ./node_modules/sbkl-client/templates/layouts/empty.vue ./layouts/
 cp ./node_modules/sbkl-client/templates/middleware/authenticated.js ./middleware/
 cp ./node_modules/sbkl-client/templates/middleware/authNotConfirmed.js ./middleware/
 cp ./node_modules/sbkl-client/templates/middleware/guest.js ./middleware/

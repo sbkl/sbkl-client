@@ -15,10 +15,10 @@ export default {
       {
         hid: "description",
         name: "description",
-        content: process.env.npm_package_description || ""
-      }
+        content: process.env.npm_package_description || "",
+      },
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
   /*
    ** Customize the progress-bar color
@@ -34,7 +34,7 @@ export default {
   plugins: [
     "./plugins/global.js",
     "./plugins/mixins/responsive.js",
-    "./plugins/sbkl-client.js"
+    "./plugins/sbkl-client.js",
   ],
   /*
    ** Nuxt.js dev-modules
@@ -48,16 +48,22 @@ export default {
     "@nuxtjs/dotenv",
     "@nuxtjs/auth",
     "portal-vue/nuxt",
-    "nuxt-purgecss"
+    "nuxt-purgecss",
   ],
   /*
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
   axios: {
-    baseURL: process.env.URL + "/api"
+    baseURL: process.env.URL + "/api",
   },
-  auth: { ...auth(process.env.URL) },
+  auth: {
+    ...auth(
+      process.env.URL,
+      process.env.SSO_CLIENT_ID,
+      process.env.SSO_REDIRECT_URI
+    ),
+  },
   router: { ...router },
   /*
    ** Build configuration
@@ -69,14 +75,14 @@ export default {
     extractCSS: true,
     postcss: {
       plugins: {
-        tailwindcss: path.resolve(__dirname, "./tailwind.config.js")
-      }
+        tailwindcss: path.resolve(__dirname, "./tailwind.config.js"),
+      },
     },
     transpile: ["sbkl-client"],
-    extend(config, ctx) {}
+    extend(config, ctx) {},
   },
   purgeCSS: {
     mode: "postcss",
-    paths: ["node_modules/sbkl-client/**/*.vue", "admin.config.js"]
-  }
+    paths: ["node_modules/sbkl-client/**/*.vue", "admin.config.js"],
+  },
 };

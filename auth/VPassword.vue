@@ -4,9 +4,7 @@
       class="shadow-xl p-6 rounded-lg bg-white w-full sm:w-88 sm:mx-0 mt-12"
       @submit.prevent="onSubmit"
     >
-      <h1 class="text-xl font-bold text-gray-900 tracking-wider">
-        Change password
-      </h1>
+      <h1 class="text-xl font-bold text-gray-900 tracking-wider">Change password</h1>
       <p class="text-gray-500 my-4 text-xs">
         Your password must be more than 8 characters long, should contain
         at-least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character.
@@ -39,7 +37,7 @@
 export default {
   name: "VPassword",
   layout: "none",
-  middleware: "authNotConfirmed",
+  // middleware: "authNotConfirmed",
   data() {
     return {
       formType: "password",

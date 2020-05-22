@@ -28,8 +28,8 @@ cd [project-name]
 ### 3- Install the package via yarn or npm:
 
 ```bash
-yarn add -D node-sass sass-loader tailwindcss @tailwindcss/ui nuxt-purgecss
-yarn add sbkl-client portal-vue @popperjs/core @nuxtjs/auth
+yarn add -D node-sass sass-loader tailwindcss @tailwindcss/ui
+yarn add sbkl-client portal-vue @popperjs/core @nuxtjs/auth nuxt-purgecss
 ```
 
 `@nuxtjs/dotenv @nuxtjs/axios` are already installed via `create-nuxt-app`.

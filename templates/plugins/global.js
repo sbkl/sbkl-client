@@ -1,6 +1,5 @@
 import Vue from "vue";
-// import Component from "../components/Component.vue";
-let components = [
-  // Component
-];
-components.forEach(component => Vue.component(component.name, component));
+const files = require.context("../components", true, /\.vue$/i);
+files.keys().map((key) => {
+  Vue.component(files(key).default.name, files(key).default);
+});

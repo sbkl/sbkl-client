@@ -83,6 +83,10 @@ export default {
   },
   purgeCSS: {
     mode: "postcss",
-    paths: ["node_modules/sbkl-client/**/*.vue", "admin.config.js"],
+    paths: [
+      "node_modules/sbkl-client/**/*.vue",
+      "admin.config.js",
+      "./components/**/*.vue",
+    ],
   },
 };

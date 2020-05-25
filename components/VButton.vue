@@ -1,5 +1,5 @@
 <template>
-  <span class="inline-flex rounded-md shadow-sm">
+  <span class="relative inline-flex rounded-md shadow-sm">
     <button
       :disabled="loading || disabled"
       type="submit"
@@ -12,8 +12,11 @@
         },
       ]"
     >
-      <v-loader :class="{ 'loading  loading-gray-400': loading }" />
-      {{ title }}
+      <v-loader
+        class="absolute left-0 ml-1 -mt-1"
+        :class="{ 'loading  loading-gray-100': loading }"
+      />
+      {{ loading ? "Loading" : title }}
     </button>
   </span>
 </template>

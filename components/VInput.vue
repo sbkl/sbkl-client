@@ -2,23 +2,25 @@
   <div class="flex flex-col">
     <label
       v-if="label"
-      class="text-xs text-gray-600 uppercase font-normal mb-px pt-1"
+      class="block text-xs font-medium leading-5"
       v-text="label.replace('_', ' ')"
     />
-    <input
-      class="h-10 pl-2 border-b outline-none bg-gray-200 text-xs"
-      :class="[
+    <div class="relative mt-1 rounded-md shadow-sm">
+      <input
+        class="block w-full text-xs form-input sm:leading-5"
+        :class="[
         {'border-red-500' : formType === failedFormName && errors[errorAttribute]},
-        disabled ? 'cursor-not-allowed text-gray-600' : 'text-gray-900 focus:border-teal-300 hover:border-teal-300',      
+        disabled ? 'cursor-not-allowed text-gray-300' : 'text-gray-700',
         { 'w-full': !this.$slots.default }
       ]"
-      :placeholder="placeholder"
-      :type="type"
-      :name="nameFormatted"
-      :value="value"
-      :readonly="disabled"
-      @input="inputChange($event, nameFormatted)"
-    />
+        :placeholder="placeholder"
+        :type="type"
+        :name="nameFormatted"
+        :value="value"
+        :readonly="disabled"
+        @input="inputChange($event, nameFormatted)"
+      />
+    </div>
     <div
       v-if="
         formType === failedFormName &&

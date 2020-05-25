@@ -1,42 +1,51 @@
 <template>
   <div>
-    <div v-if="show" class="z-10 absolute inset-0" @click.self="close"></div>
+    <div v-if="show" class="absolute inset-0 z-10" @click.self="close"></div>
     <div class="relative">
       <label
         v-if="label != ''"
-        class="text-xs text-gray-600 uppercase font-normal mb-1"
+        class="block text-xs font-medium leading-5 text-gray-700"
         v-text="label.replace('_', ' ')"
       />
-      <button
-        ref="button"
-        type="button"
-        class="w-full flex items-center bg-gray-200 text-xs h-10 pl-2 border-b bg-transparent focus:outline-none"
-        :class="[
-          {
-            'border-red-500':
-              formType === failedFormName && errors[errorAttribute]
-          },
-          disabled
-            ? 'cursor-not-allowed text-gray-600'
-            : 'text-gray-900 focus:border-teal-300 hover:border-teal-300'
-        ]"
-        @click="open"
-      >
-        <span v-if="value !== ''">{{ value }}</span>
-        <span v-else class="search-select-placeholder text-gray-500">{{
-          placeholder
-        }}</span>
-      </button>
+      <div>
+        <div class="rounded-md shadow-sm">
+          <button
+            ref="button"
+            type="button"
+            @click="open"
+            class="inline-flex justify-between w-full px-4 py-2 text-xs font-medium leading-5 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md hover:text-gray-500 active:bg-gray-50 active:text-gray-800"
+            :class="[
+              {
+                'border-red-500':
+                  formType === failedFormName && errors[errorAttribute]
+              },
+              value === '' ? 'text-gray-400' : 'text-gray-700',
+              disabled
+                ? 'cursor-not-allowed text-gray-500'
+                : 'text-gray-700 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue'
+            ]"
+          >
+            <span>{{ value != "" ? value : placeholder}}</span>
+            <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fill-rule="evenodd"
+                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
       <div
         ref="dropdown"
         v-show="show"
-        class="w-full absolute z-10 bg-gray-800 rounded shadow-lg text-xs text-gray-900 p-2"
+        class="absolute z-10 w-full p-2 text-xs text-gray-900 bg-gray-800 rounded shadow-lg"
       >
-        <div class="relative rounded overflow-hidden bg-gray-200">
+        <div class="relative mb-2 bg-gray-200 rounded">
           <input
             ref="search"
             type="text"
-            class="w-full p-2 focus:outline-none h-10"
+            class="block w-full form-input sm:text-sm sm:leading-5"
             :class="[
               showAdditionalAttributes
                 ? 'bg-gray-800 text-white font-bold cursor-not-allowed'
@@ -63,7 +72,7 @@
           <button
             v-if="onAddItem && !showAdditionalAttributes"
             ref="add"
-            class="absolute right-0 inset-y-0 px-2 focus:outline-none"
+            class="absolute inset-y-0 right-0 px-2 rounded-r-lg focus:outline-none"
             :class="[
               exists
                 ? 'cursor-not-allowed bg-gray-300'
@@ -81,7 +90,7 @@
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="fill-current w-5 h-5"
+              class="w-5 h-5 fill-current"
               viewBox="0 0 512 512"
             >
               <path
@@ -92,7 +101,7 @@
           <button
             ref="close"
             v-if="showAdditionalAttributes"
-            class="absolute right-0 inset-y-0 px-2 focus:outline-none cursor-pointer text-white focus:text-teal-300"
+            class="absolute inset-y-0 right-0 px-2 text-white cursor-pointer focus:outline-none focus:text-teal-300"
             @click.prevent="showAdditionalAttributes = false"
             @keydown.enter.prevent="showAdditionalAttributes = false"
             @keydown.tab.prevent="focusAttributeField(0)"
@@ -100,7 +109,7 @@
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              class="fill-current w-6 h-6"
+              class="w-6 h-6 fill-current"
               viewBox="0 0 512 512"
             >
               <path
@@ -118,7 +127,7 @@
             <li
               v-for="(option, index) in filteredOptions"
               :key="option"
-              class="w-full text-left py-2 px-2 text-white focus:outline-none cursor-pointer rounded flex justify-between items-center"
+              class="flex items-center justify-between w-full px-2 py-2 text-left text-white rounded cursor-pointer focus:outline-none"
               :class="[
                 index === highlightedIndex
                   ? 'bg-teal-300 text-teal-900 font-semibold hover:bg-teal-400 hover:text-white'
@@ -129,64 +138,56 @@
               {{ option }}
               <span
                 v-if="badge(option)"
-                class="rounded-full w-6 h-6 flex items-center justify-center font-semibold"
+                class="flex items-center justify-center w-6 h-6 font-semibold rounded-full"
                 :class="[
                   index === highlightedIndex
                     ? 'bg-gray-800 text-white'
                     : 'bg-teal-300 text-gray-800'
                 ]"
-                >{{ badge(option) }}</span
-              >
+              >{{ badge(option) }}</span>
               <button
                 v-if="onRemoveItem && !badge(option)"
                 ref="remove"
-                class="focus:text-red-500 hover:text-red-500 focus:outline-none mr-1"
+                class="mr-1 focus:text-red-400 hover:text-red-400 focus:outline-none"
                 @keydown.tab.prevent="focusSearchInput"
                 @keydown.enter.prevent="onSubmitRemove(option)"
                 @click.prevent="onSubmitRemove(option)"
                 @keydown.esc="close"
               >
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="fill-current w-5 h-5"
-                  viewBox="0 0 512 512"
+                  class="w-4 h-4"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
                 >
                   <path
-                    d="M133.1 128l23.6 290.7c0 16.2 13.1 29.3 29.3 29.3h141c16.2 0 29.3-13.1 29.3-29.3L379.6 128H133.1zm61.6 265L188 160h18.5l6.9 233h-18.7zm70.3 0h-18V160h18v233zm52.3 0h-18.6l6.8-233H324l-6.7 233zM364 92h-36l-26.3-23c-3.7-3.2-8.4-5-13.2-5h-64.8c-4.9 0-9.7 1.8-13.4 5L184 92h-36c-17.6 0-30 8.4-30 26h276c0-17.6-12.4-26-30-26z"
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                   />
                 </svg>
               </button>
             </li>
           </ul>
           <div v-show="showAdditionalAttributes" class="mt-2" ref="attributes">
-            <div
-              v-for="attribute in attributes"
-              :key="attribute.name"
-              class="mb-2"
-            >
-              <label class="uppercase text-gray-200">
-                {{ attribute.name.replace(/[\W_]+/g, " ") }}
-              </label>
+            <div v-for="attribute in attributes" :key="attribute.name" class="mb-2">
+              <label class="text-gray-200 uppercase">{{ attribute.name.replace(/[\W_]+/g, " ") }}</label>
               <select
                 v-if="attribute.list.length > 0"
-                class="bg-gray-200 block h-10 w-full focus:outline-none focus:bg-white"
+                class="block w-full h-10 bg-gray-200 focus:outline-none focus:bg-white"
                 :value="attributeValues[attribute.name]"
                 @change="e => setAttributeValue(e.target.value, attribute.name)"
                 @keydown.enter.prevent="focusNextAttributeField(attribute.name)"
                 @keydown.esc="close"
               >
-                <option
-                  v-for="item in attribute.list"
-                  :value="item"
-                  :key="item"
-                  >{{ item }}</option
-                >
+                <option v-for="item in attribute.list" :value="item" :key="item">{{ item }}</option>
               </select>
               <input
                 v-if="attribute.list.length === 0"
                 type="text"
                 :value="attributeValues[attribute]"
-                class="bg-gray-200 rounded w-full h-10 p-2 focus:outline-none focus:bg-white"
+                class="w-full h-10 p-2 bg-gray-200 rounded focus:outline-none focus:bg-white"
                 @input="e => setAttributeValue(e.target.value, attribute.name)"
                 @keydown.enter.prevent="focusNextAttributeField(attribute)"
                 @keydown.esc="close"
@@ -194,21 +195,19 @@
             </div>
             <button
               ref="addWithAttributeButton"
-              class="w-full bg-teal-400 text-teal-800 h-10 uppercase font-bold rounded mt-2 focus:outline-none focus:bg-teal-300"
+              class="w-full h-10 mt-2 font-bold text-teal-800 uppercase bg-teal-400 rounded focus:outline-none focus:bg-teal-300"
               @keydown.tab.prevent="$refs.close.focus"
               @click.prevent="onSubmitAddWithAttributes"
               @keydown.enter.prevent="onSubmitAddWithAttributes"
               @keydown.esc="close"
-            >
-              Add
-            </button>
+            >Add</button>
           </div>
           <div
-            class="w-full text-left py-2 px-2 text-gray-500 font-semibold"
+            class="w-full px-2 py-2 font-semibold text-left text-gray-500"
             v-show="!filteredOptions.length && !showAdditionalAttributes"
           >
             {{
-              options.length === 0 ? "No option available" : "No result found"
+            options.length === 0 ? "No option available" : "No result found"
             }}
           </div>
         </div>

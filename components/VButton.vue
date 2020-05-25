@@ -2,7 +2,7 @@
   <span class="inline-flex rounded-md shadow-sm">
     <button
       :disabled="loading || disabled"
-      type="button"
+      type="submit"
       class="w-full justify-center inline-flex items-center px-2.5 py-1.5 border border-transparent text-xs leading-4 font-medium rounded text-white transition ease-in-out duration-150"
       :class="[
         customStyles,

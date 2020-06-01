@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="">
+    <div class>
       <label
         v-if="label != ''"
         class="block text-xs font-medium leading-5 text-gray-700"
@@ -26,13 +26,8 @@
             <span
               class="truncate"
               :class="value === '' ? 'text-gray-400' : 'text-gray-700'"
-              >{{ value != "" ? value : placeholder }}</span
-            >
-            <svg
-              class="w-5 h-5 ml-2 -mr-1"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
+            >{{ value != "" ? value : placeholder }}</span>
+            <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20">
               <path
                 fill-rule="evenodd"
                 d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -50,9 +45,7 @@
       >
         <div class="text-xs text-gray-900 bg-white rounded shadow-lg w-72">
           <div class="pb-2 m-4 bg-white border-b border-gray-200">
-            <h3 class="text-lg font-medium leading-6 text-gray-900">
-              {{ label }}
-            </h3>
+            <h3 class="text-lg font-medium leading-6 text-gray-900">{{ label }}</h3>
           </div>
           <div class="relative mx-4 mb-4 bg-gray-200 rounded">
             <div class="flex mt-1 rounded-md shadow-sm">
@@ -70,9 +63,7 @@
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    ></path>
+                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
                 <input
@@ -135,7 +126,7 @@
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path d="M12 4v16m8-8H4"></path>
+                  <path d="M12 4v16m8-8H4" />
                 </svg>
               </button>
               <button
@@ -156,7 +147,7 @@
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path d="M6 18L18 6M6 6l12 12"></path>
+                  <path d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
@@ -173,16 +164,12 @@
                   class="flex items-center justify-between px-2 py-2 text-sm leading-5 text-gray-700 rounded cursor-pointer group hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
                   :class="[index === highlightedIndex ? 'bg-gray-200' : '']"
                 >
-                  <span class="truncate" @click.prevent="select(option)">
-                    {{ option }}
-                  </span>
+                  <span class="truncate" @click.prevent="select(option)">{{ option }}</span>
                   <span
                     @click.prevent="select(option)"
                     v-if="badge(option)"
                     class="ml-auto inline-block py-0.5 px-3 text-xs leading-4 rounded-full bg-gray-50 group-focus:bg-gray-100 transition ease-in-out duration-150"
-                  >
-                    {{ badge(option) }}
-                  </span>
+                  >{{ badge(option) }}</span>
                   <button
                     v-if="onRemoveItem && !badge(option)"
                     ref="remove"
@@ -210,18 +197,14 @@
               </li>
             </ul>
             <div v-show="showAdditionalAttributes">
-              <div
-                v-for="(attribute, index) in attributes"
-                :key="attribute.name"
-                class="mb-2"
-              >
+              <div v-for="(attribute, index) in attributes" :key="attribute.name" class="mb-2">
                 <label
                   for="country"
                   class="block mb-1 ml-1 text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2"
                 >
                   {{
-                    attribute.name.charAt(0, 1).toUpperCase() +
-                    attribute.name.replace(/[\W_]+/g, " ").substr(1)
+                  attribute.name.charAt(0, 1).toUpperCase() +
+                  attribute.name.replace(/[\W_]+/g, " ").substr(1)
                   }}
                 </label>
                 <div class="mt-1 sm:mt-0">
@@ -240,12 +223,7 @@
                       @keydown.esc="close"
                       class="block w-full transition duration-150 ease-in-out form-select sm:text-sm sm:leading-5"
                     >
-                      <option
-                        v-for="item in attribute.list"
-                        :value="item"
-                        :key="item"
-                        >{{ item }}</option
-                      >
+                      <option v-for="item in attribute.list" :value="item" :key="item">{{ item }}</option>
                     </select>
                     <div v-else class="max-w-lg rounded-md shadow-sm">
                       <input
@@ -267,9 +245,7 @@
                   </div>
                 </div>
               </div>
-              <span
-                class="relative inline-flex w-full h-10 mt-4 rounded-md shadow-sm"
-              >
+              <span class="relative inline-flex w-full h-10 mt-4 rounded-md shadow-sm">
                 <button
                   ref="button"
                   @keydown.tab.prevent="$refs.close.focus"
@@ -280,9 +256,7 @@
                   :class="[
                     'bg-teal-600 hover:bg-teal-500 focus:outline-none focus:border-teal-700 focus:shadow-outline-teal active:bg-teal-700',
                   ]"
-                >
-                  Add
-                </button>
+                >Add</button>
               </span>
             </div>
             <div
@@ -290,7 +264,7 @@
               v-show="!filteredOptions.length && !showAdditionalAttributes"
             >
               {{
-                options.length === 0 ? "No option available" : "No result found"
+              options.length === 0 ? "No option available" : "No result found"
               }}
             </div>
           </div>
@@ -328,51 +302,51 @@ export default {
   props: {
     value: {
       default: "",
-      type: String,
+      type: String
     },
     options: {
       default: () => [],
-      type: Array,
+      type: Array
     },
     placeholder: {
       default: "Select",
-      type: String,
+      type: String
     },
     label: {
       default: "",
-      type: String,
+      type: String
     },
     disabled: {
       default: false,
-      type: Boolean,
+      type: Boolean
     },
     filterFunction: {
       default: (search, options) =>
-        options.filter((item) =>
+        options.filter(item =>
           item.toLowerCase().startsWith(search.toLowerCase().trim())
         ),
-      type: Function,
+      type: Function
     },
     onInputCallback: {
       default: null,
-      type: Function,
+      type: Function
     },
     onAddItem: {
       default: null,
-      type: Function,
+      type: Function
     },
     onRemoveItem: {
       default: null,
-      type: Function,
+      type: Function
     },
     additionalAttributes: {
       default: () => [],
-      type: Array,
+      type: Array
     },
     errorField: {
       default: null,
-      type: String,
-    },
+      type: String
+    }
   },
   computed: {
     filteredOptions() {
@@ -380,7 +354,7 @@ export default {
       if (Array.isArray(options)) {
         return this.filterFunction(
           this.search,
-          options.map((option) => option[name])
+          options.map(option => option[name])
         );
       } else {
         return this.filterFunction(this.search, this.options);
@@ -396,19 +370,19 @@ export default {
       if (Array.isArray(options)) {
         return (
           options
-            .map((option) => option[name])
+            .map(option => option[name])
             .filter(
-              (option) => option.toLowerCase() === this.search.toLowerCase()
+              option => option.toLowerCase() === this.search.toLowerCase()
             ).length > 0 || this.search === ""
         );
       } else {
         return (
           this.options.filter(
-            (option) => option.toLowerCase() === this.search.toLowerCase()
+            option => option.toLowerCase() === this.search.toLowerCase()
           ).length > 0 || this.search === ""
         );
       }
-    },
+    }
   },
   data() {
     return {
@@ -422,14 +396,14 @@ export default {
           const [name, list, defaultIndex = 0] = attribute;
           carry.push({
             name,
-            list,
+            list
           });
         } else {
           const name = attribute;
           const list = [];
           carry.push({
             name,
-            list,
+            list
           });
         }
         return carry;
@@ -443,14 +417,14 @@ export default {
           carry[name] = null;
         }
         return carry;
-      }, {}),
+      }, {})
     };
   },
   methods: {
     badge(option) {
       const [options, name, badge] = this.options;
       if (Array.isArray(options)) {
-        const index = options.findIndex((item) => item[name] === option);
+        const index = options.findIndex(item => item[name] === option);
         return options[index][badge];
       } else {
         return null;
@@ -500,7 +474,7 @@ export default {
       this.scrollToHighlightedIndex();
     },
     focusNextAttributeField(attribute) {
-      const index = this.additionalAttributes.findIndex((item) => {
+      const index = this.additionalAttributes.findIndex(item => {
         const [name, list] = item;
         return name === attribute;
       });
@@ -551,7 +525,7 @@ export default {
     scrollToHighlightedIndex() {
       if (this.$refs.options.children[this.highlightedIndex]) {
         this.$refs.options.children[this.highlightedIndex].scrollIntoView({
-          block: "nearest",
+          block: "nearest"
         });
       }
     },
@@ -586,7 +560,7 @@ export default {
       if (this.onInputCallback) {
         this.onInputCallback(item);
       }
-    },
-  },
+    }
+  }
 };
 </script>

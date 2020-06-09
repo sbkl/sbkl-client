@@ -83,9 +83,27 @@ yarn dev
 
 ### v-modal-input
 
-| Props      |      Type       |                       Default                       |                       Description                        |
-| ---------- | :-------------: | :-------------------------------------------------: | :------------------------------------------------------: |
-| label      |      Array      |                 ["Labels", "Label"]                 |              [Plural label, Singular label]              |
-| type       |     String      |                      "single"                       |   "single" if single value. "list" if multiple values    |
-| v-model    | String or Array |                       String                        |     String if single value. Array if multiple values     |
-| labelClass |     String      | "block text-xs font-medium leading-5 text-gray-700" | Uses tailwindcss classes by default but can be any class |
+## usage
+
+```javascript
+<v-modal-input
+  :label="['Customer profiles', 'Customer profile']"
+  v-model="form.customer_profile"
+  :options="[tags.customer_profiles, ['name'], 'count']"
+  :titleFields="['name']"
+  :onAddItem="name => storeCustomerProfile({ name })"
+  :onRemoveItem="profile => destroyCustomerProfile({ profile })"
+/>
+```
+
+| Props        |      Type       |                       Default                       |                                Description                                 |
+| ------------ | :-------------: | :-------------------------------------------------: | :------------------------------------------------------------------------: |
+| label        |      Array      |                 ["Labels", "Label"]                 |                [String Plural label, String Singular label]                |
+| type         |     String      |                      "single"                       |            "single" if single value. "list" if multiple values             |
+| v-model      | String or Array |                       String                        |        Expect a String if type is "single". Array if type is "list"        |
+| labelClass   |     String      | "block text-xs font-medium leading-5 text-gray-700" |          Uses tailwindcss classes by default but can be any class          |
+| options      |      Array      |                         []                          |            [Array options, Array namefield, String badge field]            |
+| titleFields  |      Array      |                         []                          |            Array of strings listing the fields to be displayed             |
+| onAddItem    |    Function     |                        null                         | return the String typed in the search bar to create a new item in the list |
+| onRemoveItem |    Function     |                        null                         |          return the Object to delete an existing item in the list          |
+| itemIcon     |     String      |                         ""                          |   Expect a String representing the name of a component returning an icon   |

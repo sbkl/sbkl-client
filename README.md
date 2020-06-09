@@ -83,8 +83,8 @@ yarn dev
 
 ### v-modal-input
 
-| Tables   |      Are      |   Cool |
+| Props    |     Type      |   Cool |
 | -------- | :-----------: | -----: |
-| col 1 is | left-aligned  | \$1600 |
+| label    | left-aligned  | \$1600 |
 | col 2 is |   centered    |   \$12 |
 | col 3 is | right-aligned |    \$1 |

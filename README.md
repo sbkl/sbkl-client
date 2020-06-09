@@ -83,8 +83,9 @@ yarn dev
 
 ### v-modal-input
 
-| Props    |     Type      |   Cool |
-| -------- | :-----------: | -----: |
-| label    | left-aligned  | \$1600 |
-| col 2 is |   centered    |   \$12 |
-| col 3 is | right-aligned |    \$1 |
+| Props      |      Type       |                       Default                       |                       Description                        |
+| ---------- | :-------------: | :-------------------------------------------------: | :------------------------------------------------------: |
+| label      |      Array      |                 ["Labels", "Label"]                 |              [Plural label, Singular label]              |
+| type       |     String      |                      "single"                       |   "single" if single value. "list" if multiple values    |
+| v-model    | String or Array |                       String                        |     String if single value. Array if multiple values     |
+| labelClass |     String      | "block text-xs font-medium leading-5 text-gray-700" | Uses tailwindcss classes by default but can be any class |

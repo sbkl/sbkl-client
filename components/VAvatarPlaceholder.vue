@@ -1,6 +1,6 @@
 <template>
   <div
-    class="h-10 w-10 rounded-full bg-cool-gray-50 flex items-center justify-center"
+    class="flex items-center justify-center w-10 h-10 rounded-full"
   >{{first.charAt(0)}}{{second.charAt(0)}}</div>
 </template>
 <script>

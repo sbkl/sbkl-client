@@ -1,12 +1,12 @@
 <template>
   <div>
-    <div class>
+    <div>
       <label
         v-if="label != ''"
         class="block text-xs font-medium leading-5 text-gray-700"
         v-text="label.replace('_', ' ')"
       />
-      <div>
+      <div class="mt-1">
         <div class="rounded-md shadow-sm">
           <button
             ref="button"

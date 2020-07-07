@@ -85,7 +85,7 @@ yarn dev
 
 ## usage
 
-```javascript
+```js
 <v-modal-input
   :label="['Customer profiles', 'Customer profile']"
   v-model="form.customer_profile"

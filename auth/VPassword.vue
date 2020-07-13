@@ -1,13 +1,11 @@
 <template>
   <div class="flex items-start justify-center">
     <form
-      class="shadow-xl p-6 rounded-lg bg-white w-full sm:w-88 sm:mx-0 mt-12"
+      class="w-full p-6 mt-12 bg-white rounded-lg shadow-xl sm:w-88 sm:mx-0"
       @submit.prevent="onSubmit"
     >
-      <h1 class="text-xl font-bold text-gray-900 tracking-wider">
-        Change password
-      </h1>
-      <p class="text-gray-500 my-4 text-xs">
+      <h1 class="text-xl font-bold tracking-wider text-gray-900">Change password</h1>
+      <p class="my-4 text-xs text-gray-500">
         Your password must be more than 8 characters long, should contain
         at-least 1 Uppercase, 1 Lowercase, 1 Numeric and 1 special character.
       </p>
@@ -55,7 +53,7 @@ export default {
     async onSubmit() {
       this.loading = true;
       try {
-        await this.$axios.patch("/user/password", this.form);
+        await this.$axios.post("/user/password", this.form);
         await this.$auth.fetchUser();
         this.redirectForRole(this.$auth.user.role);
       } catch (e) {

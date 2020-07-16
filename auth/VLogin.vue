@@ -1,45 +1,93 @@
 <template>
-  <div class="flex items-start justify-center">
-    <form
-      class="shadow-xl p-6 rounded-lg bg-white w-full sm:w-88 sm:mx-0 mt-12"
-      @submit.prevent="onSubmit"
-    >
-      <h1 class="text-xl font-bold text-gray-900 tracking-wider mb-4">Login</h1>
-      <v-input
-        class="mb-4"
-        label="Email"
-        type="email"
-        v-model="form.username"
-        placeholder="me@example.com"
-      />
-      <v-input
-        class="mb-4"
-        label="Password"
-        type="password"
-        v-model="form.password"
-        placeholder="secret"
-      />
-      <v-button class="w-full" title="Login" :loading="loading" />
-      <nuxt-link
-        :to="{
-          name: 'auth-password-reset'
-        }"
-        class="block text-center text-teal-500 mt-4 text-sm hover:underline hover:text-teal-300"
-        href="#"
-      >Forgot password</nuxt-link>
-    </form>
+  <div>
+    <div class="flex flex-col justify-center min-h-screen py-12 bg-gray-50 sm:px-6 lg:px-8">
+      <div class="sm:mx-auto sm:w-full sm:max-w-md">
+        <img v-if="logo" class="w-auto h-12 mx-auto" :src="logo" :alt="APP_NAME" />
+        <h2
+          class="mt-6 text-3xl font-extrabold leading-9 text-center text-gray-900"
+        >Sign in to your account</h2>
+      </div>
+
+      <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        <div class="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
+          <form @submit.prevent="onSubmit" @keydown="clearAllErrors">
+            <div>
+              <label
+                for="email"
+                class="block text-sm font-medium leading-5 text-gray-700"
+              >Email address</label>
+              <div class="mt-1 rounded-md shadow-sm">
+                <input
+                  id="email"
+                  type="email"
+                  required
+                  v-model="form.username"
+                  class="block w-full px-3 py-2 placeholder-gray-400 transition duration-150 ease-in-out border border-gray-300 rounded-md appearance-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                />
+              </div>
+            </div>
+
+            <div class="mt-6">
+              <label
+                for="password"
+                class="block text-sm font-medium leading-5 text-gray-700"
+              >Password</label>
+              <div class="mt-1 rounded-md shadow-sm">
+                <input
+                  id="password"
+                  type="password"
+                  required
+                  v-model="form.password"
+                  class="block w-full px-3 py-2 placeholder-gray-400 transition duration-150 ease-in-out border border-gray-300 rounded-md appearance-none focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5"
+                />
+              </div>
+            </div>
+
+            <div class="mt-6">
+              <span class="block w-full rounded-md shadow-sm">
+                <button
+                  type="submit"
+                  class="flex justify-center w-full px-4 py-2 text-sm font-medium text-white transition duration-150 ease-in-out border border-transparent rounded-md hover:bg-gray-700 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray active:bg-gray-900"
+                  :class="loading ? 'cursor-not-allowed bg-gray-700' : 'bg-gray-800'"
+                >{{ loading ? 'Loading...' : 'Sign in'}}</button>
+              </span>
+              <div v-if="errors" class="flex flex-col">
+                <span
+                  v-for="error in Object.keys(errors)"
+                  :key="error"
+                  class="mt-4 text-xs text-red-500"
+                >{{ errors[error] }}</span>
+              </div>
+            </div>
+          </form>
+          <div class="flex items-center justify-center mt-6">
+            <div class="text-sm leading-5">
+              <nuxt-link
+                :to="{
+                name: 'auth-password-reset'
+              }"
+                href="#"
+                class="font-medium text-gray-600 transition duration-150 ease-in-out hover:text-gray-500 focus:outline-none focus:underline"
+              >Forgot your password?</nuxt-link>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-import { redirectRoutes } from "../../../admin.config.js";
+import { redirectRoutes, logo } from "../../../admin.config.js";
 import { mapActions } from "vuex";
 
 export default {
   name: "VLogin",
-  layout: "none",
+  layout: "empty",
   middleware: "guest",
   data() {
     return {
+      APP_NAME: process.env.APP_NAME,
+      logo: logo ? logo : null,
       formType: "login",
       form: {
         username: "",

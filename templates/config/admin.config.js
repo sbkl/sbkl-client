@@ -68,7 +68,4 @@ const redirectRoutes = {
   user: "/",
 };
 
-// const logo = require("./assets/img/rstore_icon_gray_bg.png");
-const logo = null;
-
 export { tables, redirectRoutes, logo };

@@ -2,7 +2,7 @@
   <div>
     <div class="flex flex-col justify-center min-h-screen py-12 bg-gray-50 sm:px-6 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-md">
-        <img class="w-auto h-12 mx-auto" :src="logo" :alt="APP_NAME" />
+        <component :is="logo" />
         <h2
           class="mt-6 text-3xl font-extrabold leading-9 text-center text-gray-900"
         >Reset your password</h2>
@@ -68,15 +68,13 @@
   </div>
 </template>
 <script>
-import { logo } from "../../../../admin.config.js";
 export default {
   name: "password-reset-request",
   layout: "empty",
   middleware: "guest",
   data() {
     return {
-      APP_NAME: process.env.APP_NAME,
-      logo: logo ? logo : null,
+      logo: "logo",
       formType: "password-reset",
       loading: false,
       form: {

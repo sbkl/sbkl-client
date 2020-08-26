@@ -4,8 +4,8 @@
       v-if="table.relationshipHeaderTitle"
       :title="table.relationshipHeaderTitle"
     />
-    <div v-if="hasHeader" class="lg:flex lg:items-center lg:justify-between mb-4">
-      <div class="flex-1 min-w-0 flex">
+    <div v-if="hasHeader" class="mb-4 lg:flex lg:items-center lg:justify-between">
+      <div class="flex flex-1 min-w-0">
         <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:leading-9 sm:truncate">
           {{
           `${table.name.charAt(0).toUpperCase()}${table.name
@@ -13,7 +13,7 @@
           .replace("_", " ")}`
           }}
         </h2>
-        <div class="ml-4 flex items-center text-sm leading-5 text-gray-500 sm:mr-6">
+        <div class="flex items-center ml-4 text-sm leading-5 text-gray-500 sm:mr-6">
           <svg
             class="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400"
             fill="currentColor"
@@ -28,14 +28,21 @@
           {{ model ? model.length : 0 }}
         </div>
       </div>
-      <div class="mt-5 flex lg:mt-0 lg:ml-4">
+      <div class="flex mt-5 lg:mt-0 lg:ml-4">
         <v-upload-button
           v-if="table.upload"
           @upload="
                 $parent.$emit('uploading', { file: $event, table: table.name })
               "
         />
-        <span class="sm:ml-3 shadow-sm rounded-md">
+        <v-paste-upload
+          v-if="table.paste"
+          :attributes="table.paste"
+          @pasted="
+                $parent.$emit('pasting', { items: $event, table: table.name })
+              "
+        />
+        <span class="rounded-md shadow-sm sm:ml-3">
           <button
             @click.prevent="
                 $parent.$emit('openModal', {
@@ -44,9 +51,9 @@
                 })
               "
             type="button"
-            class="cursor-pointer inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-gray-700 hover:bg-gray-600 focus:outline-none focus:shadow-outline-gray focus:border-gray-800 transition duration-150 ease-in-out"
+            class="inline-flex items-center px-4 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-gray-700 border border-transparent rounded-md cursor-pointer hover:bg-gray-600 focus:outline-none focus:shadow-outline-gray focus:border-gray-800"
           >
-            <svg class="-ml-1 mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+            <svg class="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20">
               <path
                 fill-rule="evenodd"
                 d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
@@ -67,18 +74,18 @@
       </div>
     </div>
     <div class="flex flex-col">
-      <div class="-my-2 py-2 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
+      <div class="py-2 -my-2 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
         <div
-          class="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200"
+          class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg"
         >
           <table class="min-w-full">
             <thead class="flex flex-col">
-              <tr class="flex items-center bg-gray-50 border-b border-gray-200">
+              <tr class="flex items-center border-b border-gray-200 bg-gray-50">
                 <th
                   v-for="([attribute, customStyle = 'w-32'],
               index) in table.attributes"
                   :key="attribute"
-                  class="px-6 py-3 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                  class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase"
                   :class="[
                 customStyle,
                 { 'flex-1': index === table.attributes.length - 1 }
@@ -91,11 +98,11 @@
                   }}
                 </th>
                 <th
-                  class="w-64 px-6 py-3 bg-gray-50 text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                  class="w-64 px-6 py-3 text-xs font-medium leading-4 tracking-wider text-gray-500 uppercase bg-gray-50"
                 >Actions</th>
               </tr>
             </thead>
-            <tbody class="bg-white block max-h-80vh overflow-scroll">
+            <tbody class="block overflow-scroll bg-white max-h-80vh">
               <tr
                 v-for="(item, index) in model"
                 :key="item.id"
@@ -106,7 +113,7 @@
                   v-for="([attribute, customStyle = 'w-32', separator],
               index) in table.attributes"
                   :key="attribute"
-                  class="px-6 py-4 whitespace-no-wrap text-sm leading-5 truncate"
+                  class="px-6 py-4 text-sm leading-5 truncate whitespace-no-wrap"
                   :class="[
                 customStyle,
                 { 'flex-1': index === table.attributes.length - 1 },
@@ -116,7 +123,7 @@
                   <div v-if="getSubAttribute(item, attribute, separator)" class="flex items-center">
                     <div>
                       <div
-                        class="text-sm leading-5 font-medium text-gray-900"
+                        class="text-sm font-medium leading-5 text-gray-900"
                       >{{getAttribute(item, attribute, separator)}}</div>
                       <div
                         class="text-sm leading-5 text-gray-500"
@@ -128,7 +135,7 @@
                   >{{ getAttribute(item, attribute, separator) }} {{ getSubAttribute(item, attribute, separator) }}</template>
                 </td>
                 <td
-                  class="w-64 px-6 py-4 whitespace-no-wrap text-sm leading-5 font-medium text-gray-900 text-center"
+                  class="w-64 px-6 py-4 text-sm font-medium leading-5 text-center text-gray-900 whitespace-no-wrap"
                 >
                   <template v-for="[action, authorised = true] in table.actions">
                     <nuxt-link
@@ -136,7 +143,7 @@
                       :key="action"
                       :to="{ name: action }"
                       v-text="action"
-                      class="-mb-px py-4 md:px-4 text-gray-500 hover:text-gray-600 cursor-pointer uppercase tracking-wide text-sm focus:outline-none font-semibold border-b-3 border-transparent"
+                      class="py-4 -mb-px text-sm font-semibold tracking-wide text-gray-500 uppercase border-transparent cursor-pointer md:px-4 hover:text-gray-600 focus:outline-none border-b-3"
                     />
                     <component
                       v-if="action.substring(0, 2) === 'v-' && authorised"
@@ -169,23 +176,23 @@ export default {
   props: {
     table: {
       type: Object,
-      required: true
+      required: true,
     },
     model: {
-      default: null
+      default: null,
     },
     hasRelationships: {
       type: Boolean,
-      default: false
+      default: false,
     },
     isRelationshipTable: {
       type: Boolean,
-      default: false
+      default: false,
     },
     hasHeader: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   methods: {
     getAttribute(item, attribute, separator) {
@@ -223,7 +230,7 @@ export default {
       } else {
         return null;
       }
-    }
-  }
+    },
+  },
 };
 </script>

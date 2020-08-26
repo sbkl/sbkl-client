@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+  <div class="px-4 mx-auto max-w-7xl sm:px-6 md:px-8">
     <v-table
       v-if="
         !parentItemSelected ||
@@ -34,8 +34,8 @@ export default {
   computed: {
     ...mapGetters({
       models: "admin/models",
-      parentItemSelected: "admin/parentItemSelected"
-    })
+      parentItemSelected: "admin/parentItemSelected",
+    }),
   },
   data() {
     return {
@@ -43,13 +43,13 @@ export default {
         name: "",
         attributes: [],
         form: [],
-        actions: []
+        actions: [],
       },
       activeTable: null,
       modal: null,
       relationships: [],
       modalContainerStyle: null,
-      parentItem: null
+      parentItem: null,
     };
   },
   created() {
@@ -60,13 +60,13 @@ export default {
     ).reduce((carry, relationshipKey) => {
       carry.push({
         ...tables[routeName].relationships[relationshipKey],
-        parentTableName: tables[routeName].name
+        parentTableName: tables[routeName].name,
       });
       return carry;
     }, []);
     this.modalContainerStyle =
       tables[routeName].modalContainerStyle || "min-w-96";
-    this.$on("openModal", data => {
+    this.$on("openModal", (data) => {
       this.modal = data;
       if (data.event.isRelationshipTable) {
         this.activeTable = this.relationships[data.tableIndex];
@@ -74,19 +74,23 @@ export default {
         this.activeTable = this.table;
       }
     });
-    this.$on("closeModal", item => {
+    this.$on("closeModal", (item) => {
       this.modal = null;
     });
     this.$on("uploading", async ({ file, table }) => {
       await this.upload({ table, file });
+    });
+    this.$on("pasting", async ({ items, table }) => {
+      await this.paste({ table, items });
     });
     this.fetchModels();
   },
   methods: {
     ...mapActions({
       fetchModels: "admin/index",
-      upload: "admin/upload"
-    })
-  }
+      upload: "admin/upload",
+      paste: "admin/paste",
+    }),
+  },
 };
 </script>

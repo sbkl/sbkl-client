@@ -1,6 +1,6 @@
 const state = () => ({
   models: [],
-  parentItemSelected: null
+  parentItemSelected: null,
 });
 const getters = {
   models(state) {
@@ -8,7 +8,7 @@ const getters = {
   },
   parentItemSelected(state) {
     return state.parentItemSelected;
-  }
+  },
 };
 const actions = {
   async index({ state, commit, dispatch }, table = null) {
@@ -17,11 +17,11 @@ const actions = {
       commit("SET_MODELS", models);
       if (table && state.parentItemSelected) {
         const item = state.models[table].find(
-          item => item.id === state.parentItemSelected.item.id
+          (item) => item.id === state.parentItemSelected.item.id
         );
         dispatch("selectParentItem", {
           parent: state.parentItemSelected.parent,
-          item
+          item,
         });
       }
     } catch (error) {}
@@ -30,7 +30,7 @@ const actions = {
     try {
       if (parentTableName) {
         const model = state.models[table].find(
-          item => item[Object.keys(data)[0]] === data[Object.keys(data)[0]]
+          (item) => item[Object.keys(data)[0]] === data[Object.keys(data)[0]]
         );
         await this.$axios.$post(
           `admin/${parentTableName}/${state.parentItemSelected.item.id}/${table}/${model.id}`
@@ -107,6 +107,15 @@ const actions = {
       console.log(e);
     }
   },
+  async paste({ dispatch }, { table, items }) {
+    try {
+      console.log(items);
+      await this.$axios.$post(`admin/${table}/paste`, items);
+      dispatch("index");
+    } catch (e) {
+      console.log(e);
+    }
+  },
   async registerUserLastActivityDate() {
     try {
       await this.$axios.$patch("admin/users/last-activity");
@@ -116,7 +125,7 @@ const actions = {
   },
   clearAdmin({ commit }) {
     commit("CLEAR_ADMIN");
-  }
+  },
 };
 const mutations = {
   SET_MODELS(state, models) {
@@ -128,12 +137,12 @@ const mutations = {
   CLEAR_ADMIN(state) {
     state.models = [];
     state.parentItemSelected = null;
-  }
+  },
 };
 
 export default {
   state,
   getters,
   actions,
-  mutations
+  mutations,
 };

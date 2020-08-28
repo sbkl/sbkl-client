@@ -284,7 +284,7 @@
           errors[errorAttribute] &&
           !Array.isArray(errors[errorAttribute])
         "
-        v-text="errors[errorAttribute]"
+        v-text="errors[errorAttribute].replace(errorAttribute, errorValue)"
       />
     </div>
   </div>
@@ -295,51 +295,50 @@ export default {
   props: {
     value: {
       default: "",
-      type: String
+      type: String,
     },
     options: {
       default: () => [],
-      type: Array
+      type: Array,
     },
     placeholder: {
       default: "Select",
-      type: String
+      type: String,
     },
     label: {
       default: "",
-      type: String
+      type: String,
     },
     disabled: {
       default: false,
-      type: Boolean
+      type: Boolean,
     },
     filterFunction: {
       default: (search, options) =>
-        options.filter(item =>
+        options.filter((item) =>
           item.toLowerCase().startsWith(search.toLowerCase().trim())
         ),
-      type: Function
+      type: Function,
     },
     onInputCallback: {
       default: null,
-      type: Function
+      type: Function,
     },
     onAddItem: {
       default: null,
-      type: Function
+      type: Function,
     },
     onRemoveItem: {
       default: null,
-      type: Function
+      type: Function,
     },
     additionalAttributes: {
       default: () => [],
-      type: Array
+      type: Array,
     },
     errorField: {
       default: null,
-      type: String
-    }
+    },
   },
   computed: {
     filteredOptions() {
@@ -347,7 +346,7 @@ export default {
       if (Array.isArray(options)) {
         return this.filterFunction(
           this.search,
-          options.map(option => option[name])
+          options.map((option) => option[name])
         );
       } else {
         return this.filterFunction(this.search, this.options);
@@ -355,27 +354,34 @@ export default {
     },
     errorAttribute() {
       return this.errorField
-        ? this.errorField
+        ? Array.isArray(this.errorField)
+          ? this.errorField[0]
+          : this.errorField
         : this.label.toLowerCase().replace(/ /g, "_");
+    },
+    errorValue() {
+      return this.errorField && Array.isArray(this.errorField)
+        ? this.errorField[1]
+        : "";
     },
     exists() {
       const [options, name, badge] = this.options;
       if (Array.isArray(options)) {
         return (
           options
-            .map(option => option[name])
+            .map((option) => option[name])
             .filter(
-              option => option.toLowerCase() === this.search.toLowerCase()
+              (option) => option.toLowerCase() === this.search.toLowerCase()
             ).length > 0 || this.search === ""
         );
       } else {
         return (
           this.options.filter(
-            option => option.toLowerCase() === this.search.toLowerCase()
+            (option) => option.toLowerCase() === this.search.toLowerCase()
           ).length > 0 || this.search === ""
         );
       }
-    }
+    },
   },
   data() {
     return {
@@ -389,14 +395,14 @@ export default {
           const [name, list, defaultIndex = 0] = attribute;
           carry.push({
             name,
-            list
+            list,
           });
         } else {
           const name = attribute;
           const list = [];
           carry.push({
             name,
-            list
+            list,
           });
         }
         return carry;
@@ -410,14 +416,14 @@ export default {
           carry[name] = null;
         }
         return carry;
-      }, {})
+      }, {}),
     };
   },
   methods: {
     badge(option) {
       const [options, name, badge] = this.options;
       if (Array.isArray(options)) {
-        const index = options.findIndex(item => item[name] === option);
+        const index = options.findIndex((item) => item[name] === option);
         return options[index][badge];
       } else {
         return null;
@@ -467,7 +473,7 @@ export default {
       this.scrollToHighlightedIndex();
     },
     focusNextAttributeField(attribute) {
-      const index = this.additionalAttributes.findIndex(item => {
+      const index = this.additionalAttributes.findIndex((item) => {
         const [name, list] = item;
         return name === attribute;
       });
@@ -518,7 +524,7 @@ export default {
     scrollToHighlightedIndex() {
       if (this.$refs.options.children[this.highlightedIndex]) {
         this.$refs.options.children[this.highlightedIndex].scrollIntoView({
-          block: "nearest"
+          block: "nearest",
         });
       }
     },
@@ -553,7 +559,7 @@ export default {
       if (this.onInputCallback) {
         this.onInputCallback(item);
       }
-    }
-  }
+    },
+  },
 };
 </script>

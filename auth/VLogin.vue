@@ -1,14 +1,10 @@
 <template>
-  <div
-    class="flex flex-col justify-center min-h-screen py-12 bg-gray-50 sm:px-6 lg:px-8"
-  >
+  <div class="flex flex-col justify-center min-h-screen py-12 bg-gray-50 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
       <component :is="logo" />
       <h2
         class="mt-6 text-3xl font-extrabold leading-9 text-center text-gray-900"
-      >
-        Sign in to your account
-      </h2>
+      >Sign in to your account</h2>
     </div>
 
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -18,8 +14,7 @@
             <label
               for="email"
               class="block text-sm font-medium leading-5 text-gray-700"
-              >Email address</label
-            >
+            >Email address</label>
             <div class="mt-1 rounded-md shadow-sm">
               <input
                 id="email"
@@ -32,11 +27,7 @@
           </div>
 
           <div class="mt-6">
-            <label
-              for="password"
-              class="block text-sm font-medium leading-5 text-gray-700"
-              >Password</label
-            >
+            <label for="password" class="block text-sm font-medium leading-5 text-gray-700">Password</label>
             <div class="mt-1 rounded-md shadow-sm">
               <input
                 id="password"
@@ -56,17 +47,14 @@
                 :class="
                   loading ? 'cursor-not-allowed bg-gray-700' : 'bg-gray-800'
                 "
-              >
-                {{ loading ? "Loading..." : "Sign in" }}
-              </button>
+              >{{ loading ? "Loading..." : "Sign in" }}</button>
             </span>
             <div v-if="errors" class="flex flex-col">
               <span
                 v-for="error in Object.keys(errors)"
                 :key="error"
                 class="mt-4 text-xs text-red-500"
-                >{{ errors[error] }}</span
-              >
+              >{{ errors[error] }}</span>
             </div>
           </div>
         </form>
@@ -78,8 +66,7 @@
               }"
               href="#"
               class="font-medium text-gray-600 transition duration-150 ease-in-out hover:text-gray-500 focus:outline-none focus:underline"
-              >Forgot your password?</nuxt-link
-            >
+            >Forgot your password?</nuxt-link>
           </div>
         </div>
       </div>
@@ -127,7 +114,7 @@ export default {
         });
         this.registerUserLastActivityDate();
         this.init();
-        this.redirectForRole(this.$auth.user.role);
+        this.redirectForRole();
       } catch (e) {
         const error =
           e.response.data.error === "invalid_grant"
@@ -139,11 +126,9 @@ export default {
       }
       this.loading = false;
     },
-    redirectForRole(role) {
-      let routeName =
-        role === "Admin" ? redirectRoutes.admin : redirectRoutes.user;
+    redirectForRole() {
       if (this.$auth.user.password_changed) {
-        this.$router.push({ name: routeName });
+        this.$router.push({ name: redirectRoutes[this.$auth.user.role] });
       } else {
         this.$router.push({ name: "auth-password" });
       }

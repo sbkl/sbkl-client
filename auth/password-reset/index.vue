@@ -1,29 +1,20 @@
 <template>
-  <div
-    class="flex flex-col justify-center min-h-screen py-12 bg-gray-50 sm:px-6 lg:px-8"
-  >
+  <div class="flex flex-col justify-center min-h-screen py-12 bg-gray-50 sm:px-6 lg:px-8">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
       <component :is="logo" />
       <h2
         class="mt-6 text-3xl font-extrabold leading-9 text-center text-gray-900"
-      >
-        Reset your password
-      </h2>
+      >Reset your password</h2>
     </div>
 
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div class="px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10">
-        <form
-          @submit.prevent="onSubmit"
-          v-if="!emailSent"
-          @keydown="clearAllErrors"
-        >
+        <form @submit.prevent="onSubmit" v-if="!emailSent" @keydown="clearAllErrors">
           <div>
             <label
               for="email"
               class="block text-sm font-medium leading-5 text-gray-700"
-              >Email address</label
-            >
+            >Email address</label>
             <div class="mt-1 rounded-md shadow-sm">
               <input
                 id="email"
@@ -44,24 +35,19 @@
                 :class="
                   loading ? 'cursor-not-allowed bg-gray-700' : 'bg-gray-800'
                 "
-              >
-                {{ loading ? "Loading..." : "Submit" }}
-              </button>
+              >{{ loading ? "Loading..." : "Submit" }}</button>
             </span>
             <div v-if="errors" class="flex flex-col">
               <span
                 v-for="error in Object.keys(errors)"
                 :key="error"
                 class="mt-4 text-xs text-red-500"
-                >{{ errors[error] }}</span
-              >
+              >{{ errors[error] }}</span>
             </div>
           </div>
         </form>
 
-        <p v-else class="font-semibold text-center text-green-500">
-          Email has been sent successfully!
-        </p>
+        <p v-else class="font-semibold text-center text-green-500">Email has been sent successfully!</p>
 
         <div class="flex items-center justify-center mt-6">
           <div class="text-sm leading-5">
@@ -71,8 +57,7 @@
               }"
               href="#"
               class="font-medium text-gray-600 transition duration-150 ease-in-out hover:text-gray-500 focus:outline-none focus:underline"
-              >Go back to sign in</nuxt-link
-            >
+            >Go back to sign in</nuxt-link>
           </div>
         </div>
       </div>

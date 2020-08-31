@@ -64,8 +64,7 @@ const tables = {
   },
 };
 const redirectRoutes = {
-  admin: "admin-regions",
-  user: "/",
+  Admin: "admin-regions",
 };
 
 export { tables, redirectRoutes, logo };

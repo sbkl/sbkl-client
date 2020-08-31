@@ -1,15 +1,11 @@
 <template>
   <div>
-    <div
-      class="flex flex-col justify-center min-h-screen py-12 bg-gray-50 sm:px-6 lg:px-8"
-    >
+    <div class="flex flex-col justify-center min-h-screen py-12 bg-gray-50 sm:px-6 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-md">
         <component :is="logo" />
         <h2
           class="mt-6 text-3xl font-extrabold leading-9 text-center text-gray-900"
-        >
-          Change your password
-        </h2>
+        >Change your password</h2>
       </div>
 
       <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -19,8 +15,7 @@
               <label
                 for="password"
                 class="block text-sm font-medium leading-5 text-gray-700"
-                >Old password</label
-              >
+              >Old password</label>
               <div class="mt-1 rounded-md shadow-sm">
                 <input
                   id="current_password"
@@ -35,8 +30,7 @@
               <label
                 for="password"
                 class="block text-sm font-medium leading-5 text-gray-700"
-                >New password</label
-              >
+              >New password</label>
               <div class="mt-1 rounded-md shadow-sm">
                 <input
                   id="new_password"
@@ -51,8 +45,7 @@
               <label
                 for="password"
                 class="block text-sm font-medium leading-5 text-gray-700"
-                >New password confirmation</label
-              >
+              >New password confirmation</label>
               <div class="mt-1 rounded-md shadow-sm">
                 <input
                   id="new_password_confirmation"
@@ -71,9 +64,7 @@
                   :class="
                     loading ? 'cursor-not-allowed bg-gray-700' : 'bg-gray-800'
                   "
-                >
-                  {{ loading ? "Loading..." : "Confirm" }}
-                </button>
+                >{{ loading ? "Loading..." : "Confirm" }}</button>
               </span>
             </div>
           </form>
@@ -84,8 +75,7 @@
                   v-for="error in Object.keys(errors)"
                   :key="error"
                   class="text-xs text-red-500"
-                  >{{ errors[error] }}</span
-                >
+                >{{ errors[error] }}</span>
               </div>
               <p
                 class="font-medium text-gray-500 transition duration-150 ease-in-out hover:text-gray-500 focus:outline-none focus:underline"
@@ -102,6 +92,7 @@
   </div>
 </template>
 <script>
+import { redirectRoutes } from "../../../admin.config.js";
 export default {
   name: "VPassword",
   layout: "empty",
@@ -124,15 +115,14 @@ export default {
       try {
         await this.$axios.post("/user/password", this.form);
         await this.$auth.fetchUser();
-        this.redirectForRole(this.$auth.user.role);
+        this.redirectForRole();
       } catch (e) {
         this.setErrors(["password", e]);
       }
       this.loading = false;
     },
-    redirectForRole(role) {
-      let routeName = role === "Admin" ? "admin-regions" : "stock";
-      this.$router.push({ name: routeName });
+    redirectForRole() {
+      this.$router.push({ name: redirectRoutes[this.$auth.user.role] });
     },
   },
 };

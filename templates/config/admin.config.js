@@ -64,8 +64,14 @@ const tables = {
   },
 };
 const redirectRoutes = {
-  Admin: "admin-regions",
-  default: "/",
+  Admin: {
+    name: "admin-regions",
+    path: "/admin/regions",
+  },
+  default: {
+    name: "/",
+    path: "/",
+  },
 };
 
 export { tables, redirectRoutes, logo };

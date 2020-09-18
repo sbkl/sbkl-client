@@ -5,8 +5,8 @@ export default function ({ store, redirect }) {
     if (store.$auth.user.password_changed) {
       return redirect(
         redirectRoutes[store.$auth.user.role]
-          ? redirectRoutes[store.$auth.user.role]
-          : redirectRoutes.default
+          ? redirectRoutes[store.$auth.user.role].path
+          : redirectRoutes.default.path
       );
     } else {
       return redirect("/auth/password");

@@ -128,7 +128,11 @@ export default {
     },
     redirectForRole() {
       if (this.$auth.user.password_changed) {
-        this.$router.push({ name: redirectRoutes[this.$auth.user.role] });
+        this.$router.push({
+          name: redirectRoutes[this.$auth.user.role]
+            ? redirectRoutes[this.$auth.user.role]
+            : redirectRoutes.default,
+        });
       } else {
         this.$router.push({ name: "auth-password" });
       }

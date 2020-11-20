@@ -14,13 +14,25 @@
             @click="open"
             :disabled="disabled"
             class="inline-flex justify-between w-full px-4 py-2 text-xs font-medium leading-5 transition duration-150 ease-in-out bg-white border border-gray-300 rounded-md"
-            :class="[disabled ? 'cursor-not-allowed': 'hover:text-gray-500 active:bg-gray-50 active:text-gray-800 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue', value === '' || disabled ? 'text-gray-400' : 'text-gray-700',               {
+            :class="[
+              disabled
+                ? 'cursor-not-allowed'
+                : 'hover:text-gray-500 active:bg-gray-50 active:text-gray-800 focus:outline-none focus:ring-teal-500 focus:border-teal-500 ',
+              value === '' || disabled ? 'text-gray-400' : 'text-gray-700',
+              {
                 'border-red-500':
                   formType === failedFormName && errors[errorAttribute],
-              }]"
+              },
+            ]"
           >
-            <span class="truncate">{{ value != "" ? value : placeholder }}</span>
-            <svg class="w-5 h-5 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20">
+            <span class="truncate">{{
+              value != "" ? value : placeholder
+            }}</span>
+            <svg
+              class="w-5 h-5 ml-2 -mr-1"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
               <path
                 fill-rule="evenodd"
                 d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
@@ -38,7 +50,9 @@
       >
         <div class="text-xs text-gray-900 bg-white rounded shadow-lg w-72">
           <div class="pb-2 m-4 bg-white border-b border-gray-200">
-            <h3 class="text-lg font-medium leading-6 text-gray-900">{{ label }}</h3>
+            <h3 class="text-lg font-medium leading-6 text-gray-900">
+              {{ label }}
+            </h3>
           </div>
           <div class="relative mx-4 mb-4 bg-gray-200 rounded">
             <div class="flex mt-1 rounded-md shadow-sm">
@@ -79,7 +93,7 @@
                       ? null
                       : focusRemoveButtonHighlighted()
                   "
-                  class="block w-full transition duration-150 ease-in-out rounded-none form-input rounded-l-md sm:text-sm sm:leading-5"
+                  class="block w-full max-w-lg pl-10 border-gray-300 shadow-sm rounded-l-md focus:ring-teal-500 focus:border-teal-500 sm:max-w-xs sm:text-sm"
                   placeholder="John Doe"
                   :class="[
                     showAdditionalAttributes
@@ -157,12 +171,15 @@
                   class="flex items-center justify-between px-2 py-2 text-sm leading-5 text-gray-700 rounded cursor-pointer group hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900"
                   :class="[index === highlightedIndex ? 'bg-gray-200' : '']"
                 >
-                  <span class="truncate" @click.prevent="select(option)">{{ option }}</span>
+                  <span class="truncate" @click.prevent="select(option)">{{
+                    option
+                  }}</span>
                   <span
                     @click.prevent="select(option)"
                     v-if="badge(option)"
                     class="ml-auto inline-block py-0.5 px-3 text-xs leading-4 rounded-full bg-gray-50 group-focus:bg-gray-100 transition ease-in-out duration-150"
-                  >{{ badge(option) }}</span>
+                    >{{ badge(option) }}</span
+                  >
                   <button
                     v-if="onRemoveItem && !badge(option)"
                     ref="remove"
@@ -190,14 +207,18 @@
               </li>
             </ul>
             <div v-show="showAdditionalAttributes">
-              <div v-for="(attribute, index) in attributes" :key="attribute.name" class="mb-2">
+              <div
+                v-for="(attribute, index) in attributes"
+                :key="attribute.name"
+                class="mb-2"
+              >
                 <label
                   for="country"
                   class="block mb-1 ml-1 text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2"
                 >
                   {{
-                  attribute.name.charAt(0, 1).toUpperCase() +
-                  attribute.name.replace(/[\W_]+/g, " ").substr(1)
+                    attribute.name.charAt(0, 1).toUpperCase() +
+                    attribute.name.replace(/[\W_]+/g, " ").substr(1)
                   }}
                 </label>
                 <div class="mt-1 sm:mt-0">
@@ -214,9 +235,15 @@
                         focusNextAttributeField(attribute.name)
                       "
                       @keydown.esc="close"
-                      class="block w-full transition duration-150 ease-in-out form-select sm:text-sm sm:leading-5"
+                      class="block w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 sm:max-w-xs sm:text-sm"
                     >
-                      <option v-for="item in attribute.list" :value="item" :key="item">{{ item }}</option>
+                      <option
+                        v-for="item in attribute.list"
+                        :value="item"
+                        :key="item"
+                      >
+                        {{ item }}
+                      </option>
                     </select>
                     <div v-else class="max-w-lg rounded-md shadow-sm">
                       <input
@@ -232,13 +259,15 @@
                           focusNextAttributeField(attribute)
                         "
                         @keydown.esc="close"
-                        class="block w-full transition duration-150 ease-in-out form-input sm:text-sm sm:leading-5"
+                        class="block w-full max-w-lg pl-10 border-gray-300 shadow-sm rounded-l-md focus:ring-teal-500 focus:border-teal-500 sm:max-w-xs sm:text-sm"
                       />
                     </div>
                   </div>
                 </div>
               </div>
-              <span class="relative inline-flex w-full h-10 mt-4 rounded-md shadow-sm">
+              <span
+                class="relative inline-flex w-full h-10 mt-4 rounded-md shadow-sm"
+              >
                 <button
                   ref="addWithAttributeButton"
                   @keydown.tab.prevent="$refs.close.focus"
@@ -249,7 +278,9 @@
                   :class="[
                     'bg-teal-600 hover:bg-teal-500 focus:outline-none focus:border-teal-700 focus:shadow-outline-teal active:bg-teal-700',
                   ]"
-                >Add</button>
+                >
+                  Add
+                </button>
               </span>
             </div>
             <div
@@ -257,7 +288,7 @@
               v-show="!filteredOptions.length && !showAdditionalAttributes"
             >
               {{
-              options.length === 0 ? "No option available" : "No result found"
+                options.length === 0 ? "No option available" : "No result found"
               }}
             </div>
           </div>

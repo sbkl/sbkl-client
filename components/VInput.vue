@@ -7,12 +7,15 @@
     />
     <div class="relative mt-1 rounded-md shadow-sm">
       <input
-        class="block w-full text-xs form-input sm:leading-5"
+        class="block w-full max-w-lg pl-10 border-gray-300 shadow-sm rounded-l-md focus:ring-teal-500 focus:border-teal-500 sm:max-w-xs sm:text-sm"
         :class="[
-        {'border-red-500' : formType === failedFormName && errors[errorAttribute]},
-        disabled ? 'cursor-not-allowed text-gray-300' : 'text-gray-700',
-        { 'w-full': !this.$slots.default }
-      ]"
+          {
+            'border-red-500':
+              formType === failedFormName && errors[errorAttribute],
+          },
+          disabled ? 'cursor-not-allowed text-gray-300' : 'text-gray-700',
+          { 'w-full': !this.$slots.default },
+        ]"
         :placeholder="placeholder"
         :type="type"
         :name="nameFormatted"
@@ -24,8 +27,8 @@
     <div
       v-if="
         formType === failedFormName &&
-          errors[errorAttribute] &&
-          Array.isArray(errors[errorAttribute])
+        errors[errorAttribute] &&
+        Array.isArray(errors[errorAttribute])
       "
     >
       <p
@@ -39,8 +42,8 @@
       class="my-1 text-xs text-red-600"
       v-if="
         formType === failedFormName &&
-          errors[errorAttribute] &&
-          !Array.isArray(errors[errorAttribute])
+        errors[errorAttribute] &&
+        !Array.isArray(errors[errorAttribute])
       "
       v-text="errors[errorAttribute]"
     />
@@ -51,28 +54,28 @@ export default {
   name: "VInput",
   props: {
     value: {
-      default: ""
+      default: "",
     },
     label: {
       default: "",
-      type: String
+      type: String,
     },
     name: {
       default: "",
-      type: String
+      type: String,
     },
     type: {
-      default: "text"
+      default: "text",
     },
     placeholder: {
-      default: ""
+      default: "",
     },
     errorField: {
-      default: null
+      default: null,
     },
     disabled: {
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     errorAttribute() {
@@ -84,18 +87,18 @@ export default {
       return this.name
         ? this.name
         : this.label.toLowerCase().replace(/ /g, "_");
-    }
+    },
   },
   data() {
     return {
-      formType: this.$parent.formType
+      formType: this.$parent.formType,
     };
   },
   methods: {
     inputChange(e, field) {
       this.clearFieldErrors(field);
       this.$emit("input", e.target.value);
-    }
-  }
+    },
+  },
 };
 </script>

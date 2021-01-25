@@ -1,17 +1,13 @@
 <template>
-  <div class="w-full">
+  <div class="flex flex-col flex-1 overflow-hidden">
     <v-relationship-header
       v-if="table.relationshipHeaderTitle"
       :title="table.relationshipHeaderTitle"
     />
-    <div v-if="hasHeader" class="mb-4 lg:flex lg:items-center lg:justify-between">
+    <div v-if="hasHeader" class="p-2 mb-4 lg:flex lg:items-center lg:justify-between">
       <div class="flex flex-1 min-w-0">
         <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:leading-9 sm:truncate">
-          {{
-          `${table.name.charAt(0).toUpperCase()}${table.name
-          .substring(1)
-          .replace("_", " ")}`
-          }}
+          {{ labelText }}
         </h2>
         <div class="flex items-center ml-4 text-sm leading-5 text-gray-500 sm:mr-6">
           <svg
@@ -73,99 +69,78 @@
         </span>
       </div>
     </div>
-    <div class="flex flex-col">
-      <div class="py-2 -my-2 sm:-mx-6 sm:px-6 lg:-mx-8 lg:px-8">
-        <div
-          class="inline-block min-w-full overflow-hidden align-middle border-b border-gray-200 shadow sm:rounded-lg"
-        >
-          <table class="min-w-full">
-            <thead class="flex flex-col">
-              <tr class="flex items-center border-b border-gray-200 bg-gray-50">
-                <th
-                  v-for="([attribute, customStyle = 'w-32'],
-              index) in table.attributes"
-                  :key="attribute"
-                  class="px-6 py-3 text-xs font-medium leading-4 tracking-wider text-left text-gray-500 uppercase"
-                  :class="[
-                customStyle,
-                { 'flex-1': index === table.attributes.length - 1 }
-              ]"
-                >
-                  {{
-                  attribute.split(":")[1]
-                  ? attribute.split(":")[1].replace("_", " ")
-                  : attribute.replace("_", " ")
-                  }}
-                </th>
-                <th
-                  class="w-64 px-6 py-3 text-xs font-medium leading-4 tracking-wider text-gray-500 uppercase bg-gray-50"
-                >Actions</th>
-              </tr>
-            </thead>
-            <tbody class="block overflow-scroll bg-white max-h-80vh">
-              <tr
-                v-for="(item, index) in model"
-                :key="item.id"
-                class="flex"
-                :class="[{ 'border-b border-gray-200': index < model.length - 1 }]"
+    <div class="flex flex-col flex-1 p-2 overflow-hidden">
+      <div
+        class="flex flex-col flex-1 min-w-full overflow-hidden align-middle shadow sm:rounded-lg"
+      >
+        <table class="flex flex-col flex-1 min-w-full overflow-hidden bg-white">
+          <thead>
+            <tr class="flex text-xs leading-4 tracking-wider text-center text-gray-500 uppercase border-b border-gray-200 bg-gray-50">
+              <th
+                v-for="(columnTitle, index) in Object.keys(table.columns)"
+                :key="columnTitle"
+                class="py-4 font-medium text-left"
+                :class="[table.columns[columnTitle].style, { 'pl-6' : index === 0 }]"
               >
-                <td
-                  v-for="([attribute, customStyle = 'w-32', separator],
-              index) in table.attributes"
-                  :key="attribute"
-                  class="px-6 py-4 text-sm leading-5 truncate whitespace-no-wrap"
-                  :class="[
-                customStyle,
-                { 'flex-1': index === table.attributes.length - 1 },
-                index === 0 ? 'font-medium text-gray-900' : 'text-gray-500'
-              ]"
-                >
-                  <div v-if="getSubAttribute(item, attribute, separator)" class="flex items-center">
-                    <div>
-                      <div
-                        class="text-sm font-medium leading-5 text-gray-900"
-                      >{{getAttribute(item, attribute, separator)}}</div>
-                      <div
-                        class="text-sm leading-5 text-gray-500"
-                      >{{ getSubAttribute(item, attribute, separator) }}</div>
-                    </div>
-                  </div>
-                  <template
-                    v-else
-                  >{{ getAttribute(item, attribute, separator) }} {{ getSubAttribute(item, attribute, separator) }}</template>
-                </td>
-                <td
-                  class="w-64 px-6 py-4 text-sm font-medium leading-5 text-center text-gray-900 whitespace-no-wrap"
-                >
-                  <template v-for="[action, authorised = true] in table.actions">
-                    <nuxt-link
-                      v-if="action.substring(0, 2) != 'v-' && authorised"
-                      :key="action"
-                      :to="{ name: action }"
-                      v-text="action"
-                      class="py-4 -mb-px text-sm font-semibold tracking-wide text-gray-500 uppercase border-transparent cursor-pointer md:px-4 hover:text-gray-600 focus:outline-none border-b-3"
-                    />
-                    <component
-                      v-if="action.substring(0, 2) === 'v-' && authorised"
-                      :key="action"
-                      :is="action"
-                      :item="item"
-                      :table="table.name"
-                      :isRelationshipTable="isRelationshipTable"
-                      @clicked="
-                    $parent.$emit('openModal', {
-                      event: $event,
-                      item,
-                      tableIndex: $vnode.key
-                    })
-                  "
-                    />
-                  </template>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+                {{ columnTitle }}
+              </th>
+              <th
+                class="flex-1 py-4 pr-8 text-xs font-medium leading-4 tracking-wider text-right text-gray-500 uppercase bg-gray-50"
+              >Actions</th>
+            </tr>
+          </thead>
+          <tbody id="main" class="block overflow-y-scroll">
+            <tr
+              v-for="(item, index) in model"
+              :key="item.id"
+              class="flex"
+              :class="[{ 'border-b border-gray-200': index < model.length - 1 }]"
+            >
+              <td
+                v-for="(columnTitle, index) in Object.keys(table.columns)"
+                :key="columnTitle"
+                class="py-4 text-sm leading-5 text-gray-500 truncate"
+                :class="[table.columns[columnTitle].style, { 'pl-6' : index === 0 }, index === 0 ? 'font-medium text-gray-900' : 'text-gray-500']"
+              >
+                {{ formattedFields(item, table.columns[columnTitle].fields) }}
+                <div v-if="table.columns[columnTitle].subFields" class="text-sm leading-5 text-gray-500">
+                  {{ formattedFields(item, table.columns[columnTitle].subFields) }}
+                </div> 
+                <div v-if="table.columns[columnTitle].subSubFields" class="text-sm font-normal leading-5 text-gray-500">
+                  {{ formattedFields(item, table.columns[columnTitle].subSubFields) }}
+                </div>                                    
+              </td>
+              <td
+                class="flex-1 px-2 py-4 text-sm font-medium text-right text-gray-900 whitespace-no-wrap"
+              >
+                <template v-for="[action, authorised = true] in table.actions">
+                  <nuxt-link
+                    v-if="action.substring(0, 2) != 'v-' && authorised"
+                    :key="action"
+                    :to="{ name: action }"
+                    v-text="action"
+                    class="py-4 -mb-px text-sm font-semibold tracking-wide text-gray-500 uppercase border-transparent cursor-pointer md:px-4 hover:text-gray-600 focus:outline-none border-b-3"
+                  />
+                  <component
+                    v-if="action.substring(0, 2) === 'v-' && authorised"
+                    :key="action"
+                    :is="action"
+                    :item="item"
+                    :table="table"
+                    :isRelationshipTable="isRelationshipTable"
+                    @clicked="
+                  $parent.$emit('openModal', {
+                    event: $event,
+                    item,
+                    tableIndex: $vnode.key
+                  })
+                "
+                  />
+                </template>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
@@ -173,6 +148,11 @@
 <script>
 export default {
   name: "VTable",
+  computed: {
+    labelText() {
+      return this.table.name.replace(/_/g, " ").charAt(0).toUpperCase() + this.table.name.replace(/_/g, " ").substring(1)      
+    }
+  },
   props: {
     table: {
       type: Object,
@@ -195,6 +175,39 @@ export default {
     },
   },
   methods: {
+    formattedFields(item, fields) {
+      return fields.split('').reduce((carry, char, index) => {
+        if(['|', '-', ' '].includes(char) || index === fields.length - 1) {
+          const indexVar = index === fields.length - 1 ? 1 : 0
+          const scope = fields.substring(carry.index, index + indexVar)
+          const scopeSplit = scope.split(':')
+          let field, prefix, suffix;
+          if(scopeSplit.length === 1) {
+            field = scopeSplit[0]
+            prefix = ''
+            suffix = ''
+          } else if(scopeSplit.length === 2) {
+            field = scopeSplit[0]
+            prefix = ''
+            suffix = scopeSplit[1]
+          } else if(scopeSplit.length === 3) {
+            field = scopeSplit[1]
+            prefix = scopeSplit[0]
+            suffix = scopeSplit[2]
+          }
+          const value = item[field]
+          const separatorValue = ['-', '|'].includes(carry.separator) ? ` ${carry.separator} ` : carry.separator 
+          carry.value = carry.value + separatorValue + prefix + ' ' + item[field] + ' ' + suffix
+          carry.separator = char
+          carry.index = index + 1
+        }
+        return carry;
+      }, {
+        index: 0,
+        value: '',
+        separator: ''
+      }).value
+    },
     getAttribute(item, attribute, separator) {
       const concatenatedFields = attribute
         .split(":")[0]

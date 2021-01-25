@@ -1,16 +1,31 @@
 <template>
-  <div class="px-4 mx-auto max-w-7xl sm:px-6 md:px-8">
-    <v-table
-      v-if="
-        !parentItemSelected ||
-          ($nuxt.$route.name === `admin-${table.name}` &&
-            parentItemSelected.parent != table.name)
-      "
-      :table="table"
-      :model="models[table.name]"
-      :hasRelationships="relationships.length > 0"
-    />
-    <div v-if="parentItemSelected && parentItemSelected.parent === table.name" class="w-full">
+  <div class="flex flex-col flex-1 pt-6 overflow-hidden">
+    <div class="flex flex-col flex-1 overflow-hidden">
+      <div class="flex flex-col flex-1 overflow-hidden">
+        <div
+          class="flex flex-col flex-1 w-full px-2 overflow-hidden"
+        >
+        <v-table
+          v-if="
+            !parentItemSelected ||
+              ($nuxt.$route.name === `${routeName}` &&
+                parentItemSelected.parent != table.name)
+          "
+          :table="table"
+          :model="models[table.name].data"
+          :hasRelationships="relationships.length > 0"
+        />
+        <v-pagination
+          v-if="models[table.name].links"
+          class="mb-4"
+          :links="models[table.name].links"
+          :meta="models[table.name].meta"
+          :filters="{ status: models[table.name].status }"
+          :fetchResults="fetchResults"
+        />
+        </div>
+      </div>        
+    <!-- <div v-if="parentItemSelected && parentItemSelected.parent === table.name" class="w-full">
       <v-table
         v-for="(relationship, index) in relationships"
         :key="index"
@@ -18,9 +33,10 @@
         :model="parentItemSelected.item[relationship.name]"
         :isRelationshipTable="true"
       />
+    </div> -->    
     </div>
     <v-modal :open="modal" :modalContainerStyle="modalContainerStyle">
-      <v-form :table="activeTable" :modal="modal" />
+      <v-admin-form :routeName="routeName" :table="activeTable" :modal="modal" />
     </v-modal>
   </div>
 </template>
@@ -37,25 +53,24 @@ export default {
       parentItemSelected: "admin/parentItemSelected",
     }),
   },
-  data() {
-    return {
-      table: {
-        name: "",
-        attributes: [],
-        form: [],
-        actions: [],
-      },
-      activeTable: null,
-      modal: null,
-      relationships: [],
-      modalContainerStyle: null,
-      parentItem: null,
-    };
-  },
-  created() {
-    const routeName = this.$nuxt.$route.name;
-    this.table = tables[routeName];
-    this.relationships = Object.keys(
+  async asyncData({ params, app, store, route, $axios }) {    
+    const routeName = route.name
+    const table = tables[routeName];
+    const routePath = routeName.replace('-', '/')
+    if(store.getters['admin/models'][table.name] === undefined) {
+      let { data, links, meta } = await $axios.$get(`${routePath}`);
+      const model = {
+        data,
+        links,
+        meta,
+        routeName,
+        status: "",
+        search: "",
+      }
+      store.commit('admin/SET_MODELS', { modelName: table.name, model })
+    }    
+
+    const relationships = Object.keys(
       tables[routeName].relationships || {}
     ).reduce((carry, relationshipKey) => {
       carry.push({
@@ -64,8 +79,26 @@ export default {
       });
       return carry;
     }, []);
-    this.modalContainerStyle =
+
+    const modalContainerStyle =
       tables[routeName].modalContainerStyle || "min-w-96";
+
+    return {
+      routeName,
+      routePath,
+      table,
+      relationships,
+      modalContainerStyle,
+    }
+  },
+  data() {
+    return {
+      activeTable: null,
+      modal: null,
+      parentItem: null,
+    };
+  },
+  created() {
     this.$on("openModal", (data) => {
       this.modal = data;
       if (data.event.isRelationshipTable) {
@@ -78,19 +111,22 @@ export default {
       this.modal = null;
     });
     this.$on("uploading", async ({ file, table }) => {
-      await this.upload({ table, file });
+      await this.upload({ routeName: this.$route.name, modelName: table, file });
     });
     this.$on("pasting", async ({ items, table }) => {
-      await this.paste({ table, items });
+      await this.paste({ routeName: this.$route.name, modelName: table, items });
     });
-    this.fetchModels();
   },
   methods: {
     ...mapActions({
-      fetchModels: "admin/index",
+      fetchModel: "admin/index",
       upload: "admin/upload",
       paste: "admin/paste",
     }),
+    fetchResults(data) {
+      const { pageNumber } = data
+      this.fetchModel({routeName: this.$nuxt.$route.name, modelName: this.table.name, pageNumber})
+    }
   },
 };
 </script>

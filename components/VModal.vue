@@ -1,15 +1,25 @@
 <template>
   <div
-    v-if="isOpen"
-    class="z-10 fixed inset-0 flex items-center justify-center"
+    class="fixed inset-0 z-10 overflow-y-auto"
+    :class="{'hidden' : !containerShow}"
   >
-    <div
-      class="fixed bg-black opacity-50 h-screen w-screen"
-      @click.self="closeModal"
-    ></div>
-    <div class="z-10 min-h-20 bg-white rounded" :class="[modalContainerStyle]">
-      <slot></slot>
+  <div class="flex items-end justify-center min-h-screen text-center sm:block sm:p-0">
+    <opacity-transition>
+      <div v-if="isOpen" class="fixed inset-0 transition-opacity" aria-hidden="true">
+        <div @click.self="closeModal" class="absolute inset-0 bg-gray-500 opacity-75"></div>
+      </div>
+    </opacity-transition>
+    <!-- This element is to trick the browser into centering the modal contents. -->
+    <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+    <modal-transition>
+      <div v-if="isOpen" class="inline-block overflow-hidden text-left align-bottom transition-all transform bg-white rounded-lg shadow-xl sm:align-middle sm:max-w-xl sm:w-full" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+        <div class="flex flex-col min-h-0 overflow-hidden text-left align-bottom sm:max-h-80vh sm:align-middle" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+        <slot></slot>
+        </div>
     </div>
+    </modal-transition>
+  </div>
   </div>
 </template>
 <script>
@@ -26,13 +36,21 @@ export default {
   },
   data() {
     return {
-      isOpen: false
+      isOpen: false,
+      containerShow: false
     };
   },
   watch: {
     open() {
       this.isOpen = !this.isOpen;
-      this.isOpen ? document.body.classList.add("overflow-hidden") : null;
+      if(this.isOpen) {
+        document.body.classList.add("overflow-hidden");
+        this.containerShow = true
+      } else {
+        setTimeout(() => {
+          this.containerShow = false
+        }, 400)
+      }
       this.clearAllErrors();
     }
   },

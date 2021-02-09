@@ -4,19 +4,19 @@ export default {
   props: {
     buttonStyle: {
       type: String,
-      default: ''
+      default: "",
     },
     focusStyle: {
       type: String,
-      default: "focus:ring-2 focus:ring-offset-2"
+      default: "focus:ring-2 focus:ring-offset-2",
     },
     textSize: {
       type: String,
-      default: "text-sm"
+      default: "text-sm",
     },
     padding: {
       type: Boolean,
-      default: true
+      default: true,
     },
     type: {
       type: String,
@@ -74,6 +74,7 @@ export default {
       }
       const hasTag = Boolean(vNode.tag);
       const isCustomComponent = Boolean(vNode.componentOptions);
+
       if (hasTag) {
         if (isCustomComponent) {
           const { tag, propsData, children } = vNode.componentOptions;
@@ -85,7 +86,13 @@ export default {
               },
               attrs: {
                 disabled: this.disabled,
-                class: `${this.iconStyle ? this.iconStyle : "w-5 h-5"} ${left ? "mr-2 -ml-1" : "ml-2 -mr-1"}`,
+                class: `${this.iconStyle ? this.iconStyle : "w-5 h-5"} ${
+                  left ? "mr-2 -ml-1" : "ml-2 -mr-1"
+                } ${
+                  vNode.componentOptions.Ctor.options.computed.defaultClasses
+                    ? vNode.componentOptions.Ctor.options.computed.defaultClasses()
+                    : ""
+                }`,
               },
             },
             children
@@ -143,14 +150,17 @@ export default {
     const vNodes = [...this.$scopedSlots.default()];
     const firstChildren = this.getNode(vNodes.shift(), createElement);
     const lastChildren = this.getNode(vNodes.pop(), createElement, false);
-
     return createElement("span", {}, [
       createElement(
         "button",
         {
           attrs: {
             type: this.type,
-            class: `inline-flex justify-center items-center ml-3 transition duration-150 border font-medium ease-in-out focus:outline-none rounded-md shadow-sm ${this.cursor} ${this.buttonStyle} ${this.padding ? 'px-4 py-2' : ''} ${this.textSize} ${this.focusStyle}`,
+            class: `inline-flex justify-center items-center ml-3 transition duration-150 border font-medium ease-in-out focus:outline-none rounded-md shadow-sm ${
+              this.cursor
+            } ${this.buttonStyle} ${this.padding ? "px-4 py-2" : ""} ${
+              this.textSize
+            } ${this.focusStyle}`,
           },
           on: {
             click: () => (!this.disabled ? this.$emit("clicked") : null),
